@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Journey Guide - Aperçu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: black;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px white;
+    }
+
+    #player-info {
+      margin-bottom: 30px;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .section {
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      padding: 20px;
+      margin: 0 auto 30px auto;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      text-align: center;
+      text-shadow: 0 0 5px #0ff;
+    }
+
+    .event-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      justify-items: center;
+    }
+
+    .event {
+      width: 180px;
+      min-height: 180px;
+      text-align: center;
+      background: #111 url("https://www.transparenttextures.com/patterns/stardust.png");
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 20px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .event:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    }
+
+    .event img {
+      max-width: 80px;
+      margin: 0 auto 10px;
+      display: block;
+    }
+
+    .event p {
+      margin: 0;
+      font-size: 14px;
+      text-shadow: 0 0 4px black;
+    }
+
+    /* Liste déroulante des requirements */
+    .requirements {
+      display: none;
+      margin-top: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .requirements h4,
+    .requirements h5 {
+      margin: 8px 0 5px;
+      font-size: 14px;
+      color: #0ff;
+    }
+
+    .unit {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    .unit img {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Journey Guide</h1>
+  <div id="player-info">Chargement des infos joueur...</div>
+
+  <div class="container">
+
+    <div class="section">
+      <h2>Tier 1</h2>
+      <div class="event-list">
+        <div class="event" data-json="data/events/EmperorPalpatine.json">
+          <p>Emperor Palpatine</p>
+          <img src="swgoh-event/emperor-palpatine-event.png" alt="Palpatine">
+          <div class="requirements"></div>
+        </div>
+        <div class="event">
+          <p>Grand Master Yoda</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Tier 2</h2>
+      <div class="event-list">
+        <div class="event" data-json="data/events/GrandAdmiralThrawn.json">
+          <p>Grand Admiral Thrawn</p>
+          <img src="swgoh-event/thrawn-event.png" alt="Thrawn">
+          <div class="requirements"></div>
+        </div>
+        <div class="event">
+          <p>R2-D2</p>
+        </div>
+        <div class="event">
+          <p>BB-8</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Tier 3</h2>
+      <div class="event-list">
+        <div class="event">
+          <p>Jedi Knight Cal Kestis</p>
+        </div>
+        <div class="event">
+          <p>Padmé Amidala</p>
+        </div>
+        <div class="event">
+          <p>Commander Luke Skywalker</p>
+        </div>
+        <div class="event">
+          <p>Rey (Jedi Training)</p>
+        </div>
+        <div class="event">
+          <p>The Mandalorian (Beskar Armor)</p>
+        </div>
+        <div class="event">
+          <p>Chimaera</p>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Tier 4</h2>
+      <div class="event-list">
+        <div class="event">
+          <p>Jedi Master Mace Windu</p>
+        </div>
+        <div class="event">
+          <p>Jar Jar Binks</p>
+        </div>
+        <div class="event">
+          <p>Doctor Aphra</p>
+        </div>
+        <div class="event">
+          <p>Grand Inquisitor</p>
+        </div>
+        <div class="event">
+          <p>Starkiller</p>
+        </div>
+        <div class="event">
+          <p>Jedi Knight Revan</p>
+        </div>
+        <div class="event">
+          <p>Darth Revan</p>
+        </div>
+        <div class="event">
+          <p>Chewbacca</p>
+        </div>
+        <div class="event">
+          <p>C-3PO</p>
+        </div>
+        <div class="event">
+          <p>Han's Millennium Falcon</p>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Tier 5</h2>
+      <div class="event-list">
+        <div class="event">
+          <p>Baylan Skoll</p>
+        </div>
+        <div class="event">
+          <p>Leviathan</p>
+        </div>
+        <div class="event">
+          <p>Executor</p>
+        </div>
+        <div class="event">
+          <p>Profundity</p>
+        </div>
+        <div class="event">
+          <p>Bo-Katan (Mand'alor)</p>
+        </div>
+        <div class="event">
+          <p>Jedi Knight Luke Skywalker</p>
+        </div>
+        <div class="event">
+          <p>General Skywalker</p>
+        </div>
+        <div class="event">
+          <p>Darth Malak</p>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>Galactic Legends</h2>
+      <div class="event-list">
+        <div class="event">
+          <p>Pirate King Hondo Ohnaka</p>
+        </div>
+        <div class="event">
+          <p>Ahsoka Tano</p>
+        </div>
+        <div class="event">
+          <p>Leia Organa</p>
+        </div>
+        <div class="event">
+          <p>Jabba the Hutt</p>
+        </div>
+        <div class="event">
+          <p>Jedi Master Kenobi</p>
+        </div>
+        <div class="event">
+          <p>Lord Vader</p>
+        </div>
+        <div class="event">
+          <p>Jedi Master Luke Skywalker</p>
+        </div>
+        <div class="event">
+          <p>Sith Eternal Emperor</p>
+        </div>
+        <div class="event">
+          <p>Supreme Leader Kylo Ren</p>
+        </div>
+        <div class="event">
+          <p>Rey</p>
+        </div>
+      </div>
+    </div>
+    <!-- (tiers suivants inchangés) -->
+  </div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const allyCode = urlParams.get("allyCode") || "000-000-000"; // fallback
+
+  async function loadPlayer() {
+    try {
+      const res = await fetch(`api.php?allyCode=${allyCode}`);
+      const data = await res.json();
+      const playerName = data.name || (data.data ? data.data.name : "Inconnu");
+      document.getElementById("player-info").innerText =
+        `Joueur : ${playerName} | Ally Code : ${allyCode}`;
+    } catch (e) {
+      document.getElementById("player-info").innerText =
+        `Ally Code : ${allyCode} (impossible de charger le joueur)`;
+    }
+  }
+  loadPlayer();
+
+  // Gestion du clic sur tous les events avec data-json
+  document.querySelectorAll(".event[data-json]").forEach(eventEl => {
+    const img = eventEl.querySelector("img");
+    const reqContainer = eventEl.querySelector(".requirements");
+    const jsonFile = eventEl.getAttribute("data-json");
+
+    img.addEventListener("click", async () => {
+      // Toggle affichage
+      if (reqContainer.style.display === "block") {
+        reqContainer.style.display = "none";
+        reqContainer.innerHTML = "";
+        return;
+      }
+
+      try {
+        const res = await fetch(jsonFile);
+        if (!res.ok) throw new Error("JSON introuvable");
+        const data = await res.json();
+
+        reqContainer.innerHTML = ""; // reset
+
+        data.requirements.forEach(req => {
+          const groupTitle = document.createElement("h4");
+          groupTitle.innerText = `${req.group || "Groupe"} (Besoin de ${req.needed})`;
+          reqContainer.appendChild(groupTitle);
+
+          req.units.forEach(u => {
+            const div = document.createElement("div");
+            div.className = "unit";
+            div.innerHTML = `
+              <img src="${u.image}" alt="${u.name}">
+              <span>${u.name} — ⭐ ${u.star_req}</span>
+            `;
+            reqContainer.appendChild(div);
+          });
+
+          if (req.overflow && req.overflow.length > 0) {
+            const altTitle = document.createElement("h5");
+            altTitle.innerText = "Unités alternatives possibles :";
+            reqContainer.appendChild(altTitle);
+
+            req.overflow.forEach(u => {
+              const div = document.createElement("div");
+              div.className = "unit";
+              div.innerHTML = `
+                <img src="${u.image}" alt="${u.name}">
+                <span>${u.name} — ⭐ ${u.star_req}</span>
+              `;
+              reqContainer.appendChild(div);
+            });
+          }
+        });
+
+        reqContainer.style.display = "block";
+      } catch (err) {
+        alert(`Impossible de charger les infos de l'événement depuis ${jsonFile} !`);
+      }
+    });
+  });
+</script>
+
+
+</body>
+
+</html>

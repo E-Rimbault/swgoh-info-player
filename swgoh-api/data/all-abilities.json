@@ -1,0 +1,29 @@
+[
+  {
+    "base_id": "50RT",
+    "ability_data": [
+      {
+        "id": "basicskill_50RT"
+      },
+      {
+        "id": "specialskill_50RT01"
+      },
+      {
+        "id": "specialskill_50RT02"
+      },
+      {
+        "id": "leaderskill_50RT"
+      },
+      {
+        "id": "uniqueskill_50RT01"
+      }
+    ]
+  },{
+    "base_id" : "SCARIFREBEL",
+    "ability_data" :[
+      {"id" : "basicability_scarifrebel"},
+      {"id" : "specialability_scarifrebel01"},
+      {"id" : "uniqueability_scarifrebel01"}
+    ]
+  }
+]

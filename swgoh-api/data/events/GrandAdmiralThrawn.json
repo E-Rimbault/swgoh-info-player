@@ -1,0 +1,73 @@
+{
+  "event": "Grand Admiral Thrawn",
+  "requirements": [
+    {
+      "needed": 5,
+      "units": [
+        {
+          "base_id": "KANANJARRUSS3",
+          "name": "Kanan Jarrus",
+          "star_req": 7,
+          "gear_req": 0,
+          "relic_req": 0,
+          "power_req": 0,
+          "image": "https://game-assets.swgoh.gg/textures/tex.charui_kanan_s3.png"
+        },
+        {
+          "base_id": "SABINEWRENS3",
+          "name": "Sabine Wren",
+          "star_req": 7,
+          "gear_req": 0,
+          "relic_req": 0,
+          "power_req": 0,
+          "image": "https://game-assets.swgoh.gg/textures/tex.charui_sabine_s3.png"
+        },
+        {
+          "base_id": "CHOPPERS3",
+          "name": "Chopper",
+          "star_req": 7,
+          "gear_req": 0,
+          "relic_req": 0,
+          "power_req": 0,
+          "image": "https://game-assets.swgoh.gg/textures/tex.charui_chopper.png"
+        },
+        {
+          "base_id": "EZRABRIDGERS3",
+          "name": "Ezra Bridger",
+          "star_req": 7,
+          "gear_req": 0,
+          "relic_req": 0,
+          "power_req": 0,
+          "image": "https://game-assets.swgoh.gg/textures/tex.charui_ezra_s3.png"
+        },
+        {
+          "base_id": "HERASYNDULLAS3",
+          "name": "Hera Syndulla",
+          "star_req": 7,
+          "gear_req": 0,
+          "relic_req": 0,
+          "power_req": 0,
+          "image": "https://game-assets.swgoh.gg/textures/tex.charui_hera_s3.png"
+        },
+        {
+          "base_id": "ZEBS3",
+          "name": "Garazeb \"Zeb\" Orrelios",
+          "star_req": 7,
+          "gear_req": 0,
+          "relic_req": 0,
+          "power_req": 0,
+          "image": "https://game-assets.swgoh.gg/textures/tex.charui_zeb_s3.png"
+        },
+        {
+          "base_id": "CAPTAINREX",
+          "name": "Captain Rex",
+          "star_req": 7,
+          "gear_req": 0,
+          "relic_req": 0,
+          "power_req": 0,
+          "image": "https://game-assets.swgoh.gg/textures/tex.charui_captainrex.png"
+        }
+      ]
+    }
+  ]
+}

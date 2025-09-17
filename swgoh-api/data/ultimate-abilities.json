@@ -1,0 +1,56 @@
+{
+  "AHSOKATANO": {
+    "ultimate": {
+      "name": "Worlds Apart",
+      "id": "ultimateskill_AHSOKATANO"
+    }
+  },
+  "JABBATHEHUTT": {
+    "ultimate": {
+      "name": "There Will Be No Bargain",
+      "id": "ultimateskill_JABBATHEHUTT"
+    }
+  },
+  "JEDIMASTERKENOBI": {
+    "ultimate": {
+      "name": "It's Over",
+      "id": "ultimateskill_JEDIMASTERKENOBI"
+    }
+  },
+  "JEDIMASTERLUKE": {
+    "ultimate": {
+      "name": "Heroic Stand",
+      "id": "ultimateskill_JEDIMASTERLUKE"
+    }
+  },
+  "LEIAORGANA": {
+    "ultimate": {
+      "name": "These Are My Friends",
+      "id": "ultimateskill_LEIAORGANA"
+    }
+  },
+  "LORDVADER": {
+    "ultimate": {
+      "name": "End of the Galactic Republic",
+      "id": "ultimateskill_LORDVADER"
+    }
+  },
+  "REY": {
+    "ultimate": {
+      "name": "Heir to the Jedi",
+      "id": "ultimateskill_REY"
+    }
+  },
+  "SITHPALPATINE": {
+    "ultimate": {
+      "name": "I Am All The Sith",
+      "id": "ultimateskill_SITHPALPATINE"
+    }
+  },
+  "SUPREMELEADERKYLOREN": {
+    "ultimate": {
+      "name": "Depths of Rage",
+      "id": "ultimateskill_SUPREMELEADERKYLOREN"
+    }
+  }
+}

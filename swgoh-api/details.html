@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Détails de l'unité</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #333333;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .unit-image {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      border: 2px solid #ccc;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+
+    .unit-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #222222;
+      text-align: left;
+      margin: 0;
+    }
+
+    .main-content {
+      display: flex;
+      gap: 20px;
+    }
+
+    .left-column {
+      width: 50%;
+    }
+
+    .right-column {
+      width: 50%;
+      background-color: #f8f8f8;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-container {
+      margin-bottom: 20px;
+    }
+
+    .right-column h3 {
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      color: #444444;
+    }
+
+    .ability-item {
+      margin-bottom: 10px;
+      color: #555555;
+      font-size: 1rem;
+    }
+
+    .ability-item strong {
+      color: #222222;
+    }
+
+    .ability-item span {
+      font-size: 0.9em;
+      color: #777777;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- En-tête avec image + titre -->
+  <div class="header">
+    <img id="unitImage" class="unit-image" src="" alt="Image de l'unité" />
+    <h1 id="unitTitle" class="unit-title">Détails de l’unité</h1>
+  </div>
+
+  <!-- Zone principale : gauche (infos + stats) / droite (capacités) -->
+  <div class="main-content">
+    <div class="left-column">
+      <div id="infoBlock" class="table-container"></div>
+      <div id="statBlock" class="table-container"></div>
+    </div>
+    <div class="right-column">
+      <h3>Capacités</h3>
+      <div id="abilityBlock"></div>
+    </div>
+  </div>
+
+  <!-- ... (le reste du HTML est inchangé) ... -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("name");
+    const baseId = params.get("base_id");
+    const allyCodeData = JSON.parse(localStorage.getItem("allyCode") || "{}");
+
+    document.getElementById("unitTitle").innerHTML = `Voici les détails de l’unité <strong>${name}</strong> <span style="font-size: 1rem; color: #777;">(base_id : ${baseId})</span>`;
+    document.getElementById("unitImage").src = `image-capacité/${baseId}/${baseId}.png`;
+
+    function formatNumber(value) {
+      return typeof value === "number" ? value.toLocaleString("fr-FR") : value;
+    }
+
+    async function loadUnitDetails() {
+      if (!allyCodeData.code) {
+        alert("Aucun code allié trouvé.");
+        return;
+      }
+
+
+      try {
+        const response = await fetch("api.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ allyCode: allyCodeData.code }),
+        });
+
+        const result = await response.json();
+        const units = [...(result.characters || []), ...(result.ships || [])];
+        const unit = units.find(
+          (u) =>
+            (u.base_id && u.base_id.toUpperCase() === baseId.toUpperCase()) ||
+            (u.name && u.name.toLowerCase() === name.toLowerCase())
+        );
+
+        if (!unit) {
+          document.getElementById("infoBlock").innerHTML = "<p>Unité non trouvée.</p>";
+          return;
+        }
+
+        const rawUnit = unit.data ?? unit;
+
+        let relic = "—";
+        if (rawUnit.gear_level === 13 && rawUnit.relic_tier >= 2) {
+          relic = rawUnit.relic_tier - 2;
+        }
+
+        const speed = rawUnit.speed ?? rawUnit.stats?.["5"] ?? "—";
+
+        const infoData = [
+          { label: "Niveau", value: formatNumber(rawUnit.level ?? "—") },
+          { label: "Puissance", value: formatNumber(rawUnit.power ?? "—") },
+          { label: "Niveau équipement", value: formatNumber(rawUnit.gear_level ?? "—") },
+          { label: "Relique", value: relic },
+          { label: "Vitesse", value: formatNumber(speed) },
+          { label: "Rareté", value: "⭐".repeat(rawUnit.rarity || 0) },
+          { label: "Ultimate", value: rawUnit.has_ultimate ? "Oui" : "Non" },
+          { label: "Galactic Legend", value: rawUnit.is_galactic_legend ? "Oui" : "Non" },
+        ];
+
+        const statLabels = {
+          sante: "Santé",
+          croissance_vigueur: "Croissance de vigueur",
+          croissance_agilite: "Croissance d’agilité",
+          croissance_tactiques: "Croissance des tactiques",
+          vitesse: "Vitesse",
+          degats_physiques: "Dégâts (physique)",
+          degats_speciaux: "Dégâts (spéciaux)",
+          armure: "Armure (%)",
+          resistance: "Résistance (%)",
+          penetration_armure: "Pénétration d’armure",
+          penetration_resistance: "Pénétration de résistance",
+          crit_chance_physique: "Chance de coup critique (physique) (%)",
+          crit_chance_special: "Chance de coup critique (spéciaux) (%)",
+          crit_damage: "Dégâts critiques (%)",
+          puissance: "Puissance (%)",
+          tenacite: "Ténacité (%)",
+          vol_sante: "Vol de santé (%)",
+          protection: "Protection",
+          maitrise: "Maîtrise",
+        };
+
+        const formatPercent = (val) => typeof val === "number" ? val.toFixed(2) : val;
+
+        function getFormattedValue(key, value) {
+          if (["crit_damage", "puissance", "tenacite", "vol_sante"].includes(key)) {
+            return value !== undefined ? Math.round(value * 100) + " %" : "—";
+          } else if (
+            [
+              "armure",
+              "resistance",
+              "crit_chance_physique",
+              "crit_chance_special"
+            ].includes(key)
+          ) {
+            return value !== undefined ? formatPercent(value) + " %" : "—";
+          } else {
+            return value !== undefined ? formatNumber(value) : "—";
+          }
+        }
+
+        const groupedStats = {
+          "Attributs de base": [
+            "croissance_vigueur",
+            "croissance_agilite",
+            "croissance_tactiques",
+            "maitrise"
+          ],
+          "Général": [
+            "sante",
+            "protection",
+            "vitesse",
+            "crit_damage",
+            "puissance",
+            "tenacite",
+            "vol_sante"
+          ],
+          "Attaque physique": [
+            "degats_physiques",
+            "crit_chance_physique",
+            "penetration_armure"
+          ],
+          "Survie physique": [
+            "armure",
+            "resistance"
+          ],
+          "Attaque spéciale": [
+            "degats_speciaux",
+            "crit_chance_special",
+            "penetration_resistance"
+          ]
+        };
+
+        function generateGroupedTable(groups) {
+          let html = `<table class="table table-striped table-bordered"><tbody>`;
+
+          const groupEntries = Object.entries(groups);
+          groupEntries.forEach(([groupTitle, keys], index) => {
+            html += `
+      <tr>
+        <th colspan="2" style="background-color: #e9ecef;">${groupTitle}</th>
+      </tr>`;
+
+            for (const key of keys) {
+              const label = statLabels[key];
+              const rawValue = rawUnit.stats?.[key];
+              const value = getFormattedValue(key, rawValue);
+              html += `
+        <tr>
+          <th style="width: 50%;">${label}</th>
+          <td>${value}</td>
+        </tr>`;
+            }
+
+            // Ajouter un espace blanc de 25px sauf pour le dernier groupe
+            if (index < groupEntries.length - 1) {
+              html += `
+        <tr><td colspan="2" style="height: 50px; background-color: #ffffff;"></td></tr>`;
+            }
+          });
+
+          html += `</tbody></table>`;
+          return html;
+        }
+
+
+
+        function generateTable(dataArray) {
+          return `
+        <table class="table table-striped table-bordered">
+          <tbody>
+            ${dataArray
+              .map(
+                ({ label, value }) => `
+              <tr>
+                <th style="width: 50%;">${label}</th>
+                <td>${value}</td>
+              </tr>`
+              )
+              .join("")}
+          </tbody>
+        </table>`;
+        }
+
+        document.getElementById("infoBlock").innerHTML =
+          `<h5>Infos générales</h5>` + generateTable(infoData);
+        document.getElementById("statBlock").innerHTML =
+          `<h5>Statistiques</h5>` + generateGroupedTable(groupedStats);
+
+        // Génération HTML des capacités
+        let abilityHtml = "";
+
+try {
+  // Charger toutes les capacités depuis all-abilities.json
+  const response = await fetch("data/all-abilities.json");
+  const allAbilitiesData = await response.json();
+
+  // Map des capacités fallback, clés en minuscules
+  const allAbilitiesMap = new Map();
+  for (const unit of allAbilitiesData) {
+    if (unit.base_id === rawUnit.base_id) {
+      for (const ab of unit.ability_data || []) {
+        allAbilitiesMap.set(ab.id.toLowerCase(), ab);
+      }
+      break;
+    }
+  }
+
+  // Capacités du joueur
+  const playerAbilities = rawUnit.ability_data || [];
+  // Map joueur, clés en minuscules
+  const playerAbilitiesMap = new Map(playerAbilities.map(ab => [ab.id.toLowerCase(), ab]));
+
+  // Set pour éviter doublons (IDs en minuscules)
+  const uniqueAbilityIds = new Set();
+
+  // Ajouter d'abord les capacités du joueur
+  playerAbilities.forEach(ab => uniqueAbilityIds.add(ab.id.toLowerCase()));
+
+  // Ajouter ensuite les capacités fallback non déjà présentes
+  for (const ab of allAbilitiesMap.values()) {
+    if (!uniqueAbilityIds.has(ab.id.toLowerCase())) {
+      uniqueAbilityIds.add(ab.id.toLowerCase());
+    }
+  }
+
+  abilityHtml = Array.from(uniqueAbilityIds).map((abilityIdLower) => {
+    const playerAb = playerAbilitiesMap.get(abilityIdLower);
+    const fallbackAb = allAbilitiesMap.get(abilityIdLower);
+
+    // Fusion des données, priorité au joueur
+    const ab = {
+      ...fallbackAb,
+      ...playerAb,
+      id: playerAb?.id || fallbackAb?.id || abilityIdLower,
+    };
+
+    const type = getAbilityType(ab.id);
+    const name = ab.name || ab.id;
+    const current = ab.ability_tier ?? "?";
+    const max = ab.tier_max ?? "?";
+
+    const statusParts = [];
+
+    if (ab.is_zeta) {
+      statusParts.push(`Zeta${ab.has_zeta_learned ? "" : " (non apprise)"}`);
+    } else if (ab.is_omega) {
+      statusParts.push(`Omega`);
+    }
+
+    if (ab.is_omicron) {
+      statusParts.push(`Omicron${ab.has_omicron_learned ? "" : " (non apprise)"}`);
+    }
+
+    const status = statusParts.length > 0 ? ` [${statusParts.join(", ")}]` : "";
+    const imagePath = `image-capacité/${rawUnit.base_id}/${ab.id}.png`;
+
+    return `
+<div class="ability-item d-flex align-items-center" style="gap: 20px;">
+  <div style="flex-shrink: 0; width: 96px; height: 96px;">
+    <img src="${imagePath}" alt="${name}" style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+  <div style="font-size: 20px; line-height: 1.2;">
+    <strong>${name}</strong><br>
+    <span>${type} • ${current}/${max}${status}</span>
+  </div>
+</div>`;
+  }).join("");
+} catch (e) {
+  console.warn("Erreur lors du chargement des capacités :", e);
+  abilityHtml = "<p>Impossible de charger les capacités.</p>";
+}
+
+// Affichage de la capacité ultime si présente
+if (rawUnit.has_ultimate) {
+  let ultimateName = "Capacité ultime";
+  let ultimateId = null;
+
+  try {
+    const responseUltimate = await fetch("data/ultimate-abilities.json");
+    const ultimateMap = await responseUltimate.json();
+
+    const ultimate = ultimateMap?.[rawUnit.base_id]?.ultimate;
+    ultimateName = ultimate?.name || ultimateName;
+    ultimateId = ultimate?.id || null;
+  } catch (e) {
+    console.warn("Échec du chargement de l’ultime :", e);
+  }
+
+  const imagePath = ultimateId
+    ? `image-capacité/${rawUnit.base_id}/${ultimateId}.png`
+    : "image-capacité/default.png";
+  abilityHtml += `
+<div class="ability-item d-flex align-items-center" style="gap: 20px;">
+  <div style="flex-shrink: 0; width: 96px; height: 96px;">
+    <img src="${imagePath}" alt="${ultimateName}" style="width: 100%; height: 100%; object-fit: contain;">
+  </div>
+  <div style="font-size: 30px; line-height: 1.2;">
+    <strong>${ultimateName}</strong><br>
+    <span>Capacité ultime déverrouillée</span>
+  </div>
+</div>`;
+}
+
+// Si aucune capacité affichée
+if (!abilityHtml.trim()) {
+  abilityHtml = "<p>Aucune capacité trouvée.</p>";
+}
+
+document.getElementById("abilityBlock").innerHTML = abilityHtml;
+
+
+      } catch (err) {
+        console.error("Erreur API", err);
+        document.getElementById("infoBlock").innerHTML = "<p>Erreur de chargement.</p>";
+      }
+    }
+
+    function getAbilityType(id) {
+      if (id.startsWith("basicskill_")) return "Basique";
+      if (id.startsWith("specialskill_")) return "Spéciale";
+      if (id.startsWith("uniqueskill_")) return "Unique";
+      if (id.startsWith("leaderskill_")) return "Leader";
+      return "Autre";
+    }
+
+    loadUnitDetails();
+
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <a href="index.html">Retour Unités</a>
+</body>
+
+</html>
